@@ -43,7 +43,7 @@ section {
     width: 80%;
     margin: 50px auto;
     display: flex;
-    gap: 30px;
+    gap: 50px;
 }
 
 section.blogs-container {
@@ -92,8 +92,7 @@ h2 {
 
 .left-side {
     background: grey;
-    flex-basis: 50%;
-    min-height: 50vh;
+    flex-basis: 40%;
 }
 
 .spline-container .spline-viewer {
@@ -108,7 +107,7 @@ input[type="submit"] {
     font-size: 20px;
     margin-top: 20px;
     border: none;
-    background: orange;
+    background: rgb(255, 111, 0);
     color: white;
     border-radius: 10px;
     cursor: pointer;
@@ -116,12 +115,16 @@ input[type="submit"] {
     width: 100%;
 }
 
+.blogs-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+}
 
 .blog {
     padding: 30px;
     border-radius: 3px;
     margin-bottom: 20px;
-    background: rgb(252, 252, 252);
+    background: rgb(241, 239, 239);
     box-shadow: 0 0 3px rgb(252, 252, 252);
 }
 
@@ -139,4 +142,17 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.blogs-intro{
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+
+.blog-image{
+    width: 100%;
+    object-fit: contain;
+    border-radius: 10px;
+    margin-bottom: 20px;
 }
