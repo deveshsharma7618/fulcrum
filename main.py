@@ -7,6 +7,10 @@ app = Flask(__name__,static_url_path="/static")
 def HomePage():
     return render_template("index.html")
 
+@app.route("/login")
+def LoginPage():
+    return render_template("login.html")
+
 
 if __name__ == "__main__":
     app.run(port = 5000)

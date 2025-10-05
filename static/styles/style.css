@@ -43,9 +43,15 @@ section{
     margin: 50px auto;
 }
 
+.spline-container{
+    width: 50%;
+    min-width: 30vh;
+}
+
 form{
     display: flex;
     flex-direction: column;
+    width: 50%;
 
 }
 textarea,input{
@@ -62,4 +68,10 @@ textarea{
 .auth-btn{
     border: 2px solid orange;
     border-radius: 10px;
+}
+
+.left-side{
+    background: grey;
+    width: 50%;
+    height: 100%;
 }
