@@ -10,13 +10,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="/static/styles/style.css">
-    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.74/build/spline-viewer.js"></script>
 </head>
 
 <body>
     <header>
         <div id="logo">
-            Ful Crum
+            <img src="/static/images/logo.png" alt="Logo" height="60px">
         </div>
         <nav>
             <ul>
@@ -24,27 +23,27 @@
                     <a href="/">Raise Issue</a>
                 </li>
                 <li>
-                    <a href="#">Blogs</a>
+                    <a href="/blogs">Blogs</a>
                 </li>
                 <li>
-                    <a href="#">Contact Us</a>
+                    <a href="/contact-us">Contact Us</a>
                 </li>
                 <li>
-                    <a href="#" class="auth-btn">Create an Account</a>
+                    <a href="/create-account" class="auth-btn">Create an Account</a>
                 </li>
                 <li>
-                    <a href="#" class="auth-btn">Login</a>
+                    <a href="/login" class="auth-btn">Login</a>
                 </li>
             </ul>
         </nav>
     </header>
     <main>
-        <section class="login-container>
-            <h2>Be aware of your power!</h2>
-            <div class="spline-container">
-            <spline-viewer url="https://prod.spline.design/lfc9sN5S8bTGi92p/scene.splinecode"></spline-viewer>
+        <section class="login-container">
+            <div class="left-side">
+
             </div>
             <form action="/login">
+                <h2>Be aware of your power!</h2>
                 <input type="email" placeholder="Enter email">
                 <input type="password" placeholder="Enter password">
                 <input type="submit" value="Login">
@@ -52,7 +51,7 @@
         </section>
     </main>
     <footer>
-
+        &copy; 2025 Fulcrum. All rights reserved.
     </footer>
 </body>
 

@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="/static/styles/style.css">
-    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.74/build/spline-viewer.js"></script>
 </head>
 
 <body>
@@ -39,14 +38,15 @@
         </nav>
     </header>
     <main>
-        <section class="raise-issue-container">
+        <section class="sigin-container">
             <div class="left-side">
-                
+
             </div>
-            <form action=" /raise-issue">
-                <h2>Be aware of your power!</h2>
-                <textarea type="text" placeholder="Enter you issue regarding academics."></textarea>
-                <button type="submit">Raise Issue</button>
+            <form action="/login">
+                <input type="email" placeholder="Enter email">
+                <input type="number" placeholder="Enter year in which you enrolled">
+                <input type="password" placeholder="Enter password">
+                <input type="submit" value="Login">
             </form>
         </section>
     </main>
