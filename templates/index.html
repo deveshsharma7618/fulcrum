@@ -1,59 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fulcrum : A place to criticize academics</title>
-    <link rel="shortcut icon" href="/static/images/favicon_io/favicon.ico" type="image/x-icon">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="/static/styles/style.css">
-    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.74/build/spline-viewer.js"></script>
-</head>
-
-<body>
-    <header>
-        <div id="logo">
-            <img src="/static/images/logo.png" alt="Logo" height="60px">
-        </div>
-        <nav>
-            <ul>
-                <li>
-                    <a href="/">Raise Issue</a>
-                </li>
-                <li>
-                    <a href="/blogs">Blogs</a>
-                </li>
-                <li>
-                    <a href="/contact-us">Contact Us</a>
-                </li>
-                <li>
-                    <a href="/create-account" class="auth-btn">Create an Account</a>
-                </li>
-                <li>
-                    <a href="/login" class="auth-btn">Login</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section class="raise-issue-container">
-            <div class="left-side">
-                <img src="/static/images/raise-voice.png" alt="Raise Issue" height="100%" width="100%">
-            </div>
-            <form action=" /raise-issue">
-                <h2>Be aware of your power!</h2>
-                <textarea type="text" placeholder="Enter you issue regarding academics."></textarea>
-                <button type="submit">Raise Issue</button>
-            </form>
-        </section>
-    </main>
-    <footer>
-        &copy; 2025 Fulcrum. All rights reserved.
-    </footer>
-</body>
-
-</html>
+{% extends "base.html" %}
+{% block title %} FulCrum : Place to criticize {% endblock %}
+{% block content %}
+<section class="raise-issue-container">
+    <div class="left-side">
+        <img src="/static/images/raise-voice.png" alt="Raise Issue" height="100%" width="100%">
+    </div>
+    <form action=" /raise-issue">
+        <h2>Be aware of your power!</h2>
+        <textarea type="text" placeholder="Enter you issue regarding academics."></textarea>
+        <button type="submit">Raise Issue</button>
+    </form>
+</section>
+{% endblock %}

@@ -1,1 +1,3 @@
 flaskdev/*
+.vscode/*
+__pycache__/*
