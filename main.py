@@ -3,21 +3,12 @@ from flaskext.mysql import MySQL
 
 
 app = Flask(__name__,static_url_path="/static")
-mysql = MySQL()
-
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-app.config['MYSQL_DATABASE_USER'] = 'team'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'falcruds@#420'
-app.config['MYSQL_DATABASE_DB'] = 'falcrum'
-
-mysql.init_app(app)
-conn = mysql.connect()
-cursor = conn.cursor()
 
 
 @app.route("/")
 def HomePage():
     return render_template("index.html")
+
 
 @app.route("/login",methods=["GET", "POST"])
 def LoginPage():
@@ -28,6 +19,7 @@ def LoginPage():
         return render_template("login.html", message="Thank you for reaching out! We will get back to you soon.")
     else:
         return render_template("login.html")
+
 
 @app.route("/create-account", methods=["GET", "POST"])
 def CreateAccount():
