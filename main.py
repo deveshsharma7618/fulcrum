@@ -1,6 +1,4 @@
 from flask import Flask, render_template, request,g
-from flaskext.mysql import MySQL
-
 
 app = Flask(__name__,static_url_path="/static")
 
