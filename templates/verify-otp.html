@@ -1,0 +1,57 @@
+{% extends "base.html" %} {% block title %} FulCrum : Place to criticize {%
+endblock %} {% block content %}
+<section class="sigin-container">
+  <div class="left-side">
+    <img
+      src="/static/images/verify.png"
+      alt="Create Account Illustration"
+      height="100%"
+      width="100%"
+    />
+  </div>
+  <form method="POST" id="otp-form">
+    <input type="number" placeholder="Enter otp" name="otp" />
+    <input type="text" placeholder="Enter your name" name="username" />
+    <input
+      type="number"
+      placeholder="Enter year in which are studying."
+      name="current_study_year"
+    />
+    <input type="password" placeholder="Enter password" name="password" />
+    <input type="submit" value="Create Account" />
+  </form>
+</section>
+
+<script>
+  form = document.getElementById("otp-form");
+  form.onsubmit = async function (event) {
+    event.preventDefault();
+    const otp = form.elements["otp"].value;
+    const username = form.elements["username"].value;
+    const current_study_year = form.elements["current_study_year"].value;
+    const password = form.elements["password"].value;
+    const formData = {
+      otp: otp,
+      username: username,
+      current_study_year: current_study_year,
+      password: password, 
+    }
+    const email = cookieStore.get("email");
+    console.log(email);
+    
+    formData.append("email", email);
+    console.log(formData);
+
+    const response = await fetch("/verify-otp", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: formData,
+    });
+    const result = await response.text();
+    console.log(result);
+    
+  };
+</script>
+{% endblock %}

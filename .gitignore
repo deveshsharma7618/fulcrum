@@ -1,3 +1,6 @@
 flaskdev/*
 .vscode/*
 __pycache__/*
+.creditionals.txt
+
+.ven/*
