@@ -1,34 +1,87 @@
-from flask import Flask, redirect, render_template, request, make_response
-from flask_sqlalchemy import SQLAlchemy
-from verify import check_email, send_otp
+from flask import Flask, redirect, render_template, request
+from flaskext.mysql import MySQL
+from verify import check_email, send_otp, verify_student_details
 
 
+mysql = MySQL()
 
 app = Flask(__name__,static_url_path="/static")
+app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+app.config['MYSQL_DATABASE_USER'] = 'root'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'devesHSharma7618'
+app.config['MYSQL_DATABASE_DB'] = 'fulcrum'
+app.config['MYSQL_DATABASE_PORT'] = 3306 # Default MySQL port
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
-db = SQLAlchemy(app)
-
-class User(db.Model):
-    email = db.Column(db.String(120), unique=True, nullable=False, primary_key=True)
-    username = db.Column(db.String(80), unique=False, nullable=False)
-    current_study_year = db.Column(db.Integer, unique=False, nullable=False)
-    password = db.Column(db.String(120), unique=False, nullable=False)
-    
-    def __init__(self, username, email, current_study_year, password):
-        super().__init__()
-        self.username = username
-        self.email = email
-        self.current_study_year = current_study_year
-        self.password = password
-
-
-
-# user = User(username="admin", email="devesh1", current_study_year="4th Year", password="admin123")
-# db.session.add(user)
-# db.session.commit()
+mysql.init_app(app) # Initialize Flask-MySQL with your app
+conn = mysql.connect()
+cursor = conn.cursor()
 
 new_users_data = []
+
+def get_all_users():
+    cursor.execute("select * from users")
+    users = cursor.fetchall()
+    return users
+
+def create_user_table():
+    cursor.execute("""
+                   create table users(
+                       roll_no int primary key,
+                       name varchar(80) not null,
+                       email varchar(80) not null unique,
+                       password varchar(100) not null,
+                       current_study_year int
+                   );
+                   """)
+    conn.commit()
+
+def create_blog_table():
+    cursor.execute("""
+                   create table blogs(
+                       id int primary key auto_increment,
+                       title varchar(200) not null,
+                       creator_email varchar(100) not null,
+                       created_at timestamp default current_timestamp,
+                       slug varchar(200) not null unique,
+                       content text not null
+                   );
+                   """)
+    conn.commit()
+
+def add_blog(title, creator_email, slug, content):
+    cursor.execute(f"insert into blogs(title,creator_email,slug,content) values('{title}','{creator_email}','{slug}','{content}')")
+    conn.commit()
+
+
+def get_n_blogs(n):
+    cursor.execute("select * from blogs")
+    blogs = cursor.fetchall()[:n]
+    return blogs
+
+def get_all_blogs():
+    cursor.execute("select * from blogs")
+    blogs = cursor.fetchall()
+    return blogs
+
+def get_blog_by_slug(slug):
+    cursor.execute(f"select * from blogs where slug='{slug}'")
+    blog = cursor.fetchone()
+    return blog
+
+
+def add_student(roll_no,name,email, current_study_year, password):
+    verify_student_details(roll_no,name,email, current_study_year, password)
+    cursor.execute(f"insert into users(roll_no,name,email,current_study_year,password) values({roll_no},'{name}','{email}',{current_study_year},'{password}')")
+    cursor.commit()
+
+def search_student(roll_no):
+    cursor.execute(f"select * from users where roll_no={roll_no}")
+    user = cursor.fetchone()
+    print(user)
+    if user is None:
+        return False
+    else:
+        return True
 
 
 @app.route("/")
@@ -39,11 +92,19 @@ def HomePage():
 @app.route("/login",methods=["GET", "POST"])
 def LoginPage():
     if request.method == "POST":
-        email = request.form.get("email")
-        password = request.form.get("password")
+        data = request.get_json();
+        email = data.get("email")
+        password = data.get("password")
         print(f"Received issue from {email}: {password}")
         
-        return render_template("login.html", message="Thank you for reaching out! We will get back to you soon.")
+        if verify_student_details(email,password):
+            return redirect("/",user_data = {
+                "email": email,
+                "password": password
+            })
+        else:
+            return "Message: Invalid Credentials. Please try again."
+        
     else:
         return render_template("login.html")
 
@@ -51,7 +112,7 @@ def LoginPage():
 @app.route("/create-account", methods=["GET", "POST"])
 def CreateAccount():
     if request.method == "POST":
-        email = request.form.get("email")
+        email = request.get_json().get("email")
         print(email)
         if check_email(email) == False:
             return "Invalid Email ID"
@@ -63,8 +124,6 @@ def CreateAccount():
         otp = send_otp(email)
         new_users_data.append([email,otp])
         print(f"Received issue from {email} : ({otp}")
-        resp = make_response()
-        resp.set_cookie("email", email,max_age=5*60)
         
         
         print(new_users_data)
@@ -75,19 +134,17 @@ def CreateAccount():
 @app.route("/verify-otp", methods=["GET", "POST"])
 def VerifyOTP():
     if request.method == "POST":
-        email = request.form.get("email")
-        
-        otp = request.form.get("otp")
-        username = request.form.get("username")
-        current_study_year = request.form.get("current_study_year")
-        password = request.form.get("password")
-        
+        data = request.get_json()
+        email = data.get("email")
+        roll_no = email.split('@')[0]
+        otp = data.get("otp")
+        username = data.get("username")
+        current_study_year = data.get("current_study_year")
+        password = data.get("password")
+              
         print(email,otp,username,current_study_year,password)
         for user in new_users_data:
-            if user[0] == email and str(user[1]) == otp:
-                new_user = User( username=username, email=email, current_study_year=current_study_year, password=password)
-                db.session.add(new_user)
-                db.session.commit()
+            if user[0] == email and str(user[1]) == otp and not search_student(roll_no):
                 new_users_data.remove(user)
                 return redirect("/",user_data = {
                     "username": username,
@@ -95,7 +152,7 @@ def VerifyOTP():
                     "current_study_year": current_study_year,
                     "password": password
                 })
-        return render_template("verify-otp.html", message="Incorrect OTP")
+        return "Message: Something went wrong. Please try again."
     else:
         return render_template("verify-otp.html")
 
@@ -119,11 +176,12 @@ def BlogsPage():
             "description": "Exploring the correlation between social media usage and mental health issues among teenagers."
         }
     ]
-    blogs_from_db = Blog.query.all()
+    blogs_from_db = get_all_blogs()
+    print(blogs_from_db)
     for blog in blogs_from_db:
         blogs.append({
-            "title": blog.title,
-            "description": blog.content
+            "title": blog[1],
+            "description": blog[5]
         })
     
     return render_template("blogs.html", blogs=blogs)
@@ -131,6 +189,7 @@ def BlogsPage():
 @app.route("/contact-us")
 def ContactUsPage():
     return render_template("contact-us.html")
+
 
 if __name__ == "__main__":
     app.run(port = 5500,debug=True)

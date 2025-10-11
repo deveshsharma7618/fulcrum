@@ -5,11 +5,11 @@
     <div class="left-side">
         <img src="/static/images/create-account.png" alt="Create Account Illustration" height="100%" width="100%">
     </div>
-    <form action="/create-account" method="POST">
+    <form action="/create-account" method="POST" id="create-account-form">
         <input type="email" placeholder="Enter email" name="email">
         <input type="submit" value="Create Account">
     </form>
 </section>
-
+<script src="/static/scripts/create-account.js"></script>
 {{ message }}
 {% endblock %}

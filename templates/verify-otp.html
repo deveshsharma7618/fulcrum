@@ -36,22 +36,23 @@ endblock %} {% block content %}
       current_study_year: current_study_year,
       password: password, 
     }
-    const email = cookieStore.get("email");
+    const email = localStorage.getItem("email");
     console.log(email);
     
-    formData.append("email", email);
+    formData["email"] = email;
     console.log(formData);
 
-    const response = await fetch("/verify-otp", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: formData,
-    });
+    const response = await fetch('/verify-otp', {
+  method: 'POST',
+  headers: {
+    'Accept': 'application/json, text/plain, */*',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(formData)
+});
     const result = await response.text();
     console.log(result);
-    
+
   };
 </script>
 {% endblock %}
