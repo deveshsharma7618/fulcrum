@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request
+from flask import Flask, jsonify, redirect, render_template, request
 from flaskext.mysql import MySQL
 from verify import check_email, send_otp, verify_student_details
 
@@ -16,7 +16,8 @@ mysql.init_app(app) # Initialize Flask-MySQL with your app
 conn = mysql.connect()
 cursor = conn.cursor()
 
-new_users_data = []
+new_users_data = [["125102009@nitkkr.ac.in",999999]]
+
 
 def get_all_users():
     cursor.execute("select * from users")
@@ -24,19 +25,25 @@ def get_all_users():
     return users
 
 def create_user_table():
-    cursor.execute("""
+    try:   
+        cursor.execute("""
                    create table users(
                        roll_no int primary key,
                        name varchar(80) not null,
                        email varchar(80) not null unique,
-                       password varchar(100) not null,
-                       current_study_year int
+                       hostel_no int,
+                       clubs varchar(200),
+                       current_study_year int,
+                       password varchar(100) not null
                    );
                    """)
-    conn.commit()
+        conn.commit()
+    except Exception as e:
+        print("User table already exists")
 
 def create_blog_table():
-    cursor.execute("""
+    try:
+        cursor.execute("""
                    create table blogs(
                        id int primary key auto_increment,
                        title varchar(200) not null,
@@ -46,7 +53,9 @@ def create_blog_table():
                        content text not null
                    );
                    """)
-    conn.commit()
+        conn.commit()
+    except Exception as e:
+        print("Blog table already exists")
 
 def add_blog(title, creator_email, slug, content):
     cursor.execute(f"insert into blogs(title,creator_email,slug,content) values('{title}','{creator_email}','{slug}','{content}')")
@@ -69,10 +78,10 @@ def get_blog_by_slug(slug):
     return blog
 
 
-def add_student(roll_no,name,email, current_study_year, password):
-    verify_student_details(roll_no,name,email, current_study_year, password)
-    cursor.execute(f"insert into users(roll_no,name,email,current_study_year,password) values({roll_no},'{name}','{email}',{current_study_year},'{password}')")
-    cursor.commit()
+def add_student(roll_no,name,email, current_study_year, hostel_no, clubs, password):
+    verify_student_details(email, current_study_year,hostel_no, password)
+    cursor.execute(f"insert into users(roll_no,name,email,current_study_year,hostel_no, clubs, password) values({roll_no},'{name}','{email}',{current_study_year},'{hostel_no}','{clubs}','{password}')")
+    conn.commit()
 
 def search_student(roll_no):
     cursor.execute(f"select * from users where roll_no={roll_no}")
@@ -88,6 +97,25 @@ def search_student(roll_no):
 def HomePage():
     return render_template("index.html")
 
+@app.route("/devesh")
+def AboutUsPage():
+    return redirect("/")
+
+@app.route("/blog/<string:slug>")
+def BlogPost(slug):
+    blog = get_blog_by_slug(slug)
+    if blog is None:
+        return "Blog not found"
+    print(blog)
+    blog_data = {
+        "title": blog[1],
+        "creator_email": blog[2],
+        "created_at": blog[3],
+        "slug": blog[4],
+        "content": blog[5]
+    }
+    return render_template("blog-post.html", blog=blog_data)
+
 
 @app.route("/login",methods=["GET", "POST"])
 def LoginPage():
@@ -98,12 +126,9 @@ def LoginPage():
         print(f"Received issue from {email}: {password}")
         
         if verify_student_details(email,password):
-            return redirect("/",user_data = {
-                "email": email,
-                "password": password
-            })
+            return jsonify({"status":200})
         else:
-            return "Message: Invalid Credentials. Please try again."
+            return jsonify({"status":500})
         
     else:
         return render_template("login.html")
@@ -121,7 +146,8 @@ def CreateAccount():
             if user[0] == email:
                 return render_template("verify-otp.html", message="OTP already sent to this email", otp_sent_to=email, otp = user[1])
             
-        otp = send_otp(email)
+        # otp = send_otp(email)
+        otp = 999999
         new_users_data.append([email,otp])
         print(f"Received issue from {email} : ({otp}")
         
@@ -140,19 +166,24 @@ def VerifyOTP():
         otp = data.get("otp")
         username = data.get("username")
         current_study_year = data.get("current_study_year")
+        hostel_no = data.get("hostel_no")
+        clubs = data.get("clubs")
         password = data.get("password")
-              
-        print(email,otp,username,current_study_year,password)
+
+        print(email,otp,username,current_study_year,hostel_no,clubs,password)
+
+        if verify_student_details(email=email,current_study_year=current_study_year, hostel_no=hostel_no, password=password):
+            return "Message: Some informations are wrong."
+        print(new_users_data)
         for user in new_users_data:
-            if user[0] == email and str(user[1]) == otp and not search_student(roll_no):
+            print(user,email,type(otp))
+            if user[0] == email and user[1] == int(otp) and not search_student(roll_no):
+                add_student(roll_no,username,email,current_study_year,hostel_no, clubs, password)
                 new_users_data.remove(user)
-                return redirect("/",user_data = {
-                    "username": username,
-                    "email": email,
-                    "current_study_year": current_study_year,
-                    "password": password
-                })
-        return "Message: Something went wrong. Please try again."
+                print("new user added successfully")
+                return jsonify({"status": 200})
+        print("Something went wrong. Please try again.")
+        return jsonify({"status":500})
     else:
         return render_template("verify-otp.html")
 

@@ -5,13 +5,13 @@
     <div class="left-side">
         <img src="/static/images/login.png" alt="Login Illustration" height="100%" width="100%">
     </div>
-    <form action="/login">
+    <form id="login-form">
         <h2>Be aware of your power!</h2>
-        <input type="email" placeholder="Enter email">
-        <input type="password" placeholder="Enter password">
+        <input type="email" placeholder="Enter email" name="email">
+        <input type="password" placeholder="Enter password" name="password">
         <input type="submit" value="Login">
     </form>
-    {{ messsage }}
+    {{ message }}
 </section>
 script src="/static/scripts/login.js"></script>
 {% endblock %}

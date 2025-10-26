@@ -1,5 +1,8 @@
-{% extends "base.html" %} {% block title %} FulCrum : Place to criticize {%
-endblock %} {% block content %}
+{% extends "base.html" %}
+
+{% block title %} FulCrum : Place to criticize {% endblock %} 
+
+{% block content %}
 <section class="sigin-container">
   <div class="left-side">
     <img
@@ -17,42 +20,12 @@ endblock %} {% block content %}
       placeholder="Enter year in which are studying."
       name="current_study_year"
     />
+    <input type="number" placeholder="Enter your hostel no" name="hostel_no" />
+    <input type="text" placeholder="Enter your clubs" name="clubs" />
     <input type="password" placeholder="Enter password" name="password" />
     <input type="submit" value="Create Account" />
   </form>
 </section>
 
-<script>
-  form = document.getElementById("otp-form");
-  form.onsubmit = async function (event) {
-    event.preventDefault();
-    const otp = form.elements["otp"].value;
-    const username = form.elements["username"].value;
-    const current_study_year = form.elements["current_study_year"].value;
-    const password = form.elements["password"].value;
-    const formData = {
-      otp: otp,
-      username: username,
-      current_study_year: current_study_year,
-      password: password, 
-    }
-    const email = localStorage.getItem("email");
-    console.log(email);
-    
-    formData["email"] = email;
-    console.log(formData);
-
-    const response = await fetch('/verify-otp', {
-  method: 'POST',
-  headers: {
-    'Accept': 'application/json, text/plain, */*',
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(formData)
-});
-    const result = await response.text();
-    console.log(result);
-
-  };
-</script>
+<script src="/static/scripts/verify-otp.js"></script>
 {% endblock %}
