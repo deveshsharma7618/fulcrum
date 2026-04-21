@@ -5,10 +5,12 @@
     <div class="left-side">
         <img src="/static/images/raise-voice.png" alt="Raise Issue" height="100%" width="100%">
     </div>
-    <form action=" /raise-issue">
+    <form id="raise-issue">
         <h2>Be aware of your power!</h2>
-        <textarea type="text" placeholder="Enter you issue regarding academics."></textarea>
+        <textarea type="text" placeholder="Enter you issue regarding academics." id="issue"></textarea>
         <button type="submit">Raise Issue</button>
     </form>
 </section>
+<script src="/static/scripts/raise-issue.js"></script>
+
 {% endblock %}

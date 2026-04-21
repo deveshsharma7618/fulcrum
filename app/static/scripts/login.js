@@ -23,8 +23,21 @@ loginForm.onsubmit = async function (event) {
     alert("Invalid Credentials. Please try again.");
     return;
   }else{
+    console.log(result);
     localStorage.setItem("email", email);
-    localStorage.setItem("api_key", password);
+    localStorage.setItem("access_token", result.access_token);
+    localStorage.setItem("username", result.username);
+    localStorage.setItem("hostel_no", result.hostel_no);
+    localStorage.setItem("clubs", result.clubs);
+    localStorage.setItem("roll_no", result.roll_no);
+    localStorage.setItem("current_study_year", result.current_study_year);
     window.location.href = "/";
   }
 };
+
+
+window.onload(()=>{
+  if(checkAuthorized){
+    window.href = "/"
+  }
+})

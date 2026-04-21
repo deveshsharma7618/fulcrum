@@ -8,6 +8,13 @@ sender_email = env.get('SENDER_EMAIL')
 sender_password = env.get('SENDER_PASSWORD')
 
 def check_email(email):
+    roll_no, domain = email.split('@')
+    if domain != "nitkkr.ac.in":
+        return False
+    
+    if not roll_no.isdigit():
+        return False
+    
     return True
 
 def hash_password(password): 

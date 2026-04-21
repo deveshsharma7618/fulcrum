@@ -1,3 +1,5 @@
+from .verify_user import verify_student_details
+from ..sql.sql_verify import verify_sql_safe
 
 def get_all_users(cursor):
     cursor.execute("select * from users")
@@ -23,19 +25,19 @@ def create_user_table(cursor, conn):
 
 
 
-
-new_users_data = [["125102009@nitkkr.ac.in",999999]]
-
-
-
-
 def add_student(cursor, conn, roll_no,name,email, current_study_year, hostel_no, clubs, password):
-    verify_student_details(email, current_study_year,hostel_no, password)
+    if not verify_sql_safe(email) or not verify_sql_safe(name) or not verify_sql_safe(clubs) or not verify_sql_safe(password) or not verify_sql_safe(str(current_study_year)) or not verify_sql_safe(str(hostel_no)):
+        print("SQL Injection detected")
+        return False
     cursor.execute(f"insert into users(roll_no,name,email,current_study_year,hostel_no, clubs, password) values({roll_no},'{name}','{email}',{current_study_year},'{hostel_no}','{clubs}','{password}')")
     conn.commit()
+    return True
 
-def search_student(cursor,roll_no):
-    cursor.execute(f"select * from users where roll_no={roll_no}")
+def search_student(cursor,roll_no, password):
+    if not verify_sql_safe(str(roll_no)):
+        return False
+    
+    cursor.execute(f"select * from users where roll_no={roll_no} and password='{password}'")
     user = cursor.fetchone()
     print(user)
     if user is None:

@@ -54,3 +54,10 @@ form.onsubmit = async function (event) {
     alert("Something went wrong. Please try again.");
   }
 };
+
+
+window.onload(()=>{
+  if(checkAuthorized){
+    window.href = "/";
+  }
+})

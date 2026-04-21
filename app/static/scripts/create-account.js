@@ -20,3 +20,9 @@ createAccountForm.onsubmit = async function (event) {
   console.log(result);
   window.location.href = "/verify-otp";
 };
+
+document.onload(()=>{
+  if(checkAuthorized){
+    window.href = "/";
+  }
+})
