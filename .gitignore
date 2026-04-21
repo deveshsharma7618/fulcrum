@@ -1,7 +1,21 @@
-flaskdev/*
 .vscode/*
 __pycache__/*
 .creditionals.txt
 
 .ven/*
 .env
+.venc/*
+
+.venv/
+
+*.pyc
+
+instance/
+
+.pytest_cache/
+.coverage
+htmlcov/
+
+dist/
+build/
+*.egg-info/

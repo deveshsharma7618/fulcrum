@@ -1,10 +1,11 @@
 import random
 import smtplib
+from dotenv import load_dotenv
+from os import environ as env
 
-with open('.env') as f:
-    lines = f.readlines()
-    sender_email = lines[0].strip()
-    sender_password = lines[1].strip()
+load_dotenv()
+sender_email = env.get('SENDER_EMAIL')
+sender_password = env.get('SENDER_PASSWORD')
 
 def check_email(email):
     return True
