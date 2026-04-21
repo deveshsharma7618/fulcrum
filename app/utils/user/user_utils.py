@@ -29,7 +29,10 @@ def add_student(cursor, conn, roll_no,name,email, current_study_year, hostel_no,
     if not verify_sql_safe(email) or not verify_sql_safe(name) or not verify_sql_safe(clubs) or not verify_sql_safe(password) or not verify_sql_safe(str(current_study_year)) or not verify_sql_safe(str(hostel_no)):
         print("SQL Injection detected")
         return False
-    cursor.execute(f"insert into users(roll_no,name,email,current_study_year,hostel_no, clubs, password) values({roll_no},'{name}','{email}',{current_study_year},'{hostel_no}','{clubs}','{password}')")
+    cursor.execute(
+        "insert into users(roll_no,name,email,current_study_year,hostel_no, clubs, password) values(%s,%s,%s,%s,%s,%s,%s)",
+        (roll_no, name, email, current_study_year, hostel_no, clubs, password),
+    )
     conn.commit()
     return True
 
@@ -37,9 +40,8 @@ def search_student(cursor,roll_no, password):
     if not verify_sql_safe(str(roll_no)):
         return False
     
-    cursor.execute(f"select * from users where roll_no={roll_no} and password='{password}'")
+    cursor.execute("select * from users where roll_no=%s and password=%s", (roll_no, password))
     user = cursor.fetchone()
-    print(user)
     if user is None:
         return False
     else:

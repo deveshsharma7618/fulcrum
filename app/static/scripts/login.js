@@ -35,9 +35,8 @@ loginForm.onsubmit = async function (event) {
   }
 };
 
-
-window.onload(()=>{
-  if(checkAuthorized){
-    window.href = "/"
+window.onload = () => {
+  if (typeof checkAuthorized === "function" && checkAuthorized()) {
+    window.location.href = "/";
   }
-})
+};

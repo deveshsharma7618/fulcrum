@@ -16,7 +16,10 @@ def create_blog_table(cursor, conn):
         print("Blog table already exists")
 
 def add_blog(cursor, conn, title, creator_email, slug, content):
-    cursor.execute(f"insert into blogs(title,creator_email,slug,content) values('{title}','{creator_email}','{slug}','{content}')")
+    cursor.execute(
+        "insert into blogs(title,creator_email,slug,content) values(%s,%s,%s,%s)",
+        (title, creator_email, slug, content),
+    )
     conn.commit()
 
 
@@ -31,6 +34,6 @@ def get_all_blogs(cursor):
     return blogs
 
 def get_blog_by_slug(cursor, slug):
-    cursor.execute(f"select * from blogs where slug='{slug}'")
+    cursor.execute("select * from blogs where slug=%s", (slug,))
     blog = cursor.fetchone()
     return blog

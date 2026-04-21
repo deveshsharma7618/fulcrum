@@ -30,8 +30,6 @@ mysql.init_app(app) # Initialize Flask-MySQL with your app
 conn = mysql.connect()
 cursor = conn.cursor()
 
-print(env.get('MYSQL_DATABASE_PASSWORD'))
-
 
 @app.route("/")
 def HomePage():
