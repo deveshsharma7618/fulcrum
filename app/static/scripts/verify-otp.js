@@ -1,12 +1,12 @@
 form = document.getElementById("otp-form");
-const login_user = (email,password)=>{
+const login_user = (email,access_token)=>{
 
 }
 
 document.onload = function() {
   const email = localStorage.getItem("email");
-  const password = localStorage.getItem("password");
-  if(login_user(email,password)){
+  const access_token = localStorage.getItem("access_token");
+  if(login_user(email,access_token)){
     window.location.href = "/";
   }else{
     localStorage.clear();

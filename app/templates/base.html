@@ -8,42 +8,44 @@
     <link rel="shortcut icon" href="/static/images/favicon_io/favicon.ico" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="/static/styles/style.css">
-    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.74/build/spline-viewer.js"></script>
 </head>
 
 <body>
-    <header>
-        <div id="logo">
-            <img src="/static/images/logo.png" alt="Logo" height="60px">
+    <header class="site-header">
+        <div class="header-inner">
+            <div id="logo">
+                <img src="/static/images/logo.png" alt="Logo" height="60">
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li>
+                        <a href="/">Raise Issue</a>
+                    </li>
+                    <li>
+                        <a href="/blogs">Blogs</a>
+                    </li>
+                    <li>
+                        <a href="/contact-us">Contact Us</a>
+                    </li>
+                    <li>
+                        <a href="/create-account" class="auth-btn">Create an Account</a>
+                    </li>
+                    <li>
+                        <a href="/login" class="auth-btn">Login</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
-        <nav>
-            <ul>
-                <li>
-                    <a href="/">Raise Issue</a>
-                </li>
-                <li>
-                    <a href="/blogs">Blogs</a>
-                </li>
-                <li>
-                    <a href="/contact-us">Contact Us</a>
-                </li>
-                <li>
-                    <a href="/create-account" class="auth-btn">Create an Account</a>
-                </li>
-                <li>
-                    <a href="/login" class="auth-btn">Login</a>
-                </li>
-            </ul>
-        </nav>
     </header>
-    <main>
+    <main class="site-main">
         {% block content %}
         {% endblock %}
     </main>
-    <footer>
+    <footer class="site-footer">
         &copy; 2025 Fulcrum. All rights reserved.
     </footer>
     <script src="/static/scripts/main.js"></script>

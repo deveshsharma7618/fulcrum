@@ -3,15 +3,17 @@
 {% block content %}
 <section class="login-container">
     <div class="left-side">
-        <img src="/static/images/login.png" alt="Login Illustration" height="100%" width="100%">
+        <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80" alt="Secure login setup with dark neon lighting" height="100%" width="100%">
     </div>
     <form id="login-form">
         <h2>Be aware of your power!</h2>
         <input type="email" placeholder="Enter email" name="email">
         <input type="password" placeholder="Enter password" name="password">
         <input type="submit" value="Login">
+        {% if message %}
+        <p class="page-message">{{ message }}</p>
+        {% endif %}
     </form>
-    {{ message }}
 </section>
 <script src="/static/scripts/login.js"></script>
 {% endblock %}

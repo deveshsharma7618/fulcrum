@@ -3,13 +3,15 @@
 {% block content %}
 <section class="sigin-container">
     <div class="left-side">
-        <img src="/static/images/create-account.png" alt="Create Account Illustration" height="100%" width="100%">
+        <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1200&q=80" alt="Developer creating account access in a dark interface" height="100%" width="100%">
     </div>
     <form action="/create-account" method="POST" id="create-account-form">
         <input type="email" placeholder="Enter email" name="email">
         <input type="submit" value="Create Account">
+        {% if message %}
+        <p class="page-message">{{ message }}</p>
+        {% endif %}
     </form>
 </section>
 <script src="/static/scripts/create-account.js"></script>
-{{ message }}
 {% endblock %}
